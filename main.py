@@ -11,14 +11,16 @@ from langchain_core.tools import tool # tool decorator which is how we pass tool
 
 load_dotenv()
 
-
 tool = [TavilySearch]
 
 ###
 
 def main():
-    print()
+    print(os.getenv('OPENAI_API_KEY'))
 
 
 if __name__ == "__main__":
     main()
+
+
+### What exactly is the AgentExecutor under the black box?
