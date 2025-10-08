@@ -11,13 +11,28 @@ from langchain_core.tools import tool # tool decorator which is how we pass tool
 
 load_dotenv()
 
-tool = [TavilySearch]
+tools = [TavilySearch()]
+llm = ChatOpenAI(model='gpt-4')
+react_prompt = hub.pull('hwchase17/react') #pulling template from the langchain hub.
+
+# We need this method in order to create an agent ;)
+agent = create_react_agent(
+    llm,
+    tools,
+    react_prompt)
+
+executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+
+chain = executor
 
 ###
 
 def main():
-    print(os.getenv('OPENAI_API_KEY'))
+    result = chain.invoke(input={
+        'input': 'search for 3 job postings for an ai engineer using langchain in Madrid, Spain on linkedin and list their details'
+    })
 
+    print(result)
 
 if __name__ == "__main__":
     main()
